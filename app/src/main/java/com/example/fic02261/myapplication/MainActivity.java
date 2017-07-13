@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
 
     //버튼객체 참조 변수 선언
     Button[][] btn;
-    Button btn1, btn2;
+    Button btn1, btn2, btn3;
     //랜덤 seed 변수 선언
     long rndSeed;
     private final int DYNAMIC_VIEW_ID = 0x8000;
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
         //--- 로또 번호가 담길 버튼 객체 얻기 --------//
         btn1 = (Button) findViewById(R.id.bt1);
         btn2 = (Button) findViewById(R.id.bt2);
+        btn3 = (Button) findViewById(R.id.bt3);
         //생성과, 초기화 버튼 리스너 등록
         btn1.setOnClickListener(this);
         btn2.setOnClickListener(this);
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
 //        ShapeDrawable sd = new ShapeDrawable(new OvalShape());
 //        sd.getPaint().setShader(new RadialGradient(60, 30, 50, Color.LTGRAY, Color.LTGRAY, Shader.TileMode.CLAMP));
         ShapeDrawable sYellow = new ShapeDrawable(new OvalShape());
-        sYellow.getPaint().setShader(new RadialGradient(60, 30, 50, Color.WHITE, Color.YELLOW, Shader.TileMode.CLAMP));
+        sYellow.getPaint().setShader(new RadialGradient(60, 30, 50, Color.WHITE, Color.rgb(255,215,0), Shader.TileMode.CLAMP));
         ShapeDrawable sBlue = new ShapeDrawable(new OvalShape());
         sBlue.getPaint().setShader(new RadialGradient(60, 30, 50, Color.WHITE, Color.BLUE, Shader.TileMode.CLAMP));
         ShapeDrawable sRed = new ShapeDrawable(new OvalShape());
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
         ShapeDrawable sBlack = new ShapeDrawable(new OvalShape());
         sBlack.getPaint().setShader(new RadialGradient(60, 30, 50, Color.WHITE, Color.BLACK, Shader.TileMode.CLAMP));
         ShapeDrawable sGreen = new ShapeDrawable(new OvalShape());
-        sGreen.getPaint().setShader(new RadialGradient(60, 30, 50, Color.WHITE, Color.GREEN, Shader.TileMode.CLAMP));
+        sGreen.getPaint().setShader(new RadialGradient(60, 30, 50, Color.WHITE, Color.rgb(50,205,50), Shader.TileMode.CLAMP));
 
         //버튼 객체 배열 사이즈 만큼 루프를 돌면서
         //랜덤값을 뽑아내고 각각의 버튼에 숫자를 넣어준다.
@@ -145,16 +147,19 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
                     btn[i][j].setText(String.valueOf(number));
                     if( number < 11 ) {
                         btn[i][j] = setBackgroundButton(btn[i][j], sYellow);
+                        btn[i][j].setTextColor(Color.BLUE);
                     } else if( number < 21 ) {
                         btn[i][j] = setBackgroundButton(btn[i][j], sBlue);
-                        btn[i][j].setTextColor(Color.YELLOW);
+                        btn[i][j].setTextColor(Color.WHITE);
                     } else if( number < 31 ) {
                         btn[i][j] = setBackgroundButton(btn[i][j], sRed);
+                        btn[i][j].setTextColor(Color.WHITE);
                     } else if( number < 41 ) {
                         btn[i][j] = setBackgroundButton(btn[i][j], sBlack);
                         btn[i][j].setTextColor(Color.WHITE);
                     } else {
                         btn[i][j] = setBackgroundButton(btn[i][j], sGreen);
+                        btn[i][j].setTextColor(Color.BLUE);
                     }
                     btn[i][j].setLayoutParams(btn_param);
 
@@ -237,7 +242,14 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        onClickRotto(v);
+        Log.i("onClick", "Start....");
+        String ssss = null;
+        if( v == btn3) {
+            new WebLottoNumberGetter().execute("aaaa");
+            Log.i("WebLottoNumberGetter", "End");
+        } else {
+            onClickRotto(v);
+        }
     }
 
     class DataFetcherTask extends AsyncTask<Void, Void, Void> {
