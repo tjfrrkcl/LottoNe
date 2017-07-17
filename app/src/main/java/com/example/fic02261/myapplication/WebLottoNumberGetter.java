@@ -67,15 +67,7 @@ public class WebLottoNumberGetter extends AsyncTask {
                                     lotto.setF4(responseJSON.getInt("drwtNo4"));
                                     lotto.setF5(responseJSON.getInt("drwtNo5"));
                                     lotto.setS6(responseJSON.getInt("drwtNo6"));
-                                    try {
-                                        handler.addLotto(lotto);// Inserting into DB
-                                    } catch (android.database.sqlite.SQLiteConstraintException se) {
-                                        Log.e("doInBackground", se.getMessage());
-                                        break;
-                                    } catch (Exception e) {
-                                        Log.e("doInBackground", e.getMessage());
-                                        break;
-                                    }
+                                    handler.addLotto(lotto);// Inserting into DB
                                 } else {
                                     Log.d("getLottoNumber", "drwNo(" + responseJSON.getInt("drwNo") + ") <= maxdrwNo(" + maxdrwNo + ")");
                                 }

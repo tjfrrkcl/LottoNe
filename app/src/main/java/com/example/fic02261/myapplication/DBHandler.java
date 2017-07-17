@@ -42,7 +42,7 @@ public class DBHandler extends SQLiteOpenHelper implements LottoListener {
     }
 
     @Override
-    public void addLotto(Lotto lotto) throws SQLiteConstraintException, Exception {
+    public void addLotto(Lotto lotto) {
         SQLiteDatabase db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(KEY_RECU_NO, lotto.getRecu_no());
