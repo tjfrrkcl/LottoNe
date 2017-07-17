@@ -221,6 +221,8 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
                 // TODO: Make sure this auto-generated app URL is correct.
                 Uri.parse("android-app://com.example.fic02261.myapplication/http/host/path")
         );
+        new WebLottoNumberGetter(this).execute("aaaa");
+        Log.i("onStart", "START");
         AppIndex.AppIndexApi.start(client, viewAction);
     }
 
@@ -313,15 +315,7 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
                     lotto.setF4(f4);
                     lotto.setF5(f5);
                     lotto.setS6(s6);
-                    try {
-                        handler.addLotto(lotto);// Inserting into DB
-                    } catch(android.database.sqlite.SQLiteConstraintException se) {
-                        Log.e("doInBackground", se.getMessage());
-                        break;
-                    } catch(Exception e) {
-                        Log.e("doInBackground", e.getMessage());
-                        break;
-                    }
+                    handler.addLotto(lotto);// Inserting into DB
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
