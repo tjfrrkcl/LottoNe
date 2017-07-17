@@ -1,5 +1,6 @@
 package com.example.fic02261.myapplication;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -23,6 +24,12 @@ import static javax.net.ssl.SSLEngineResult.Status.OK;
 
 //public class WebLottoNumberGetter  extends AsyncTask {
 public class WebLottoNumberGetter extends AsyncTask {
+    DBHandler handler = null; //new DBHandler(MainActivity.);
+    private Context context;
+
+    public WebLottoNumberGetter(Context context) {
+        this.context = context;
+    }
     @Override
     public String doInBackground(Object[] aaa) {
         String ssss = null;
@@ -102,9 +109,22 @@ public class WebLottoNumberGetter extends AsyncTask {
             response = new String(byteData);
 
             JSONObject responseJSON = new JSONObject(response);
+            if( "success".equals( responseJSON.getString("returnValue") ) ) {
 //            Boolean result = (Boolean) responseJSON.get("result");
 //            String age = (String) responseJSON.get("age");
 //            String job = (String) responseJSON.get("job");
+                Lotto lotto = new Lotto();
+                lotto.setRecu_no(responseJSON.getInt("drwNo"));
+                lotto.setCom_yn("Y");
+                lotto.setF1(responseJSON.getInt("drwtNo1"));
+                lotto.setS2(responseJSON.getInt("drwtNo2"));
+                lotto.setT3(responseJSON.getInt("drwtNo3"));
+                lotto.setF4(responseJSON.getInt("drwtNo4"));
+                lotto.setF5(responseJSON.getInt("drwtNo5"));
+                lotto.setS6(responseJSON.getInt("drwtNo6"));
+                handler = new DBHandler(this.context);
+                handler.addLotto(lotto);// Inserting into DB
+            }
 
             Log.i("getLottoNumber", "DATA response = " + response);
 

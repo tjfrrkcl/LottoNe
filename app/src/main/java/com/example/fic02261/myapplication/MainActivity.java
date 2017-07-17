@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
         Log.i("onClick", "Start....");
         String ssss = null;
         if( v == btn3) {
-            new WebLottoNumberGetter().execute("aaaa");
+            new WebLottoNumberGetter(this).execute("aaaa");
             Log.i("WebLottoNumberGetter", "End");
         } else {
             onClickRotto(v);
