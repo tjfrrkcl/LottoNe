@@ -80,7 +80,7 @@ public class WebLottoNumberGetter extends AsyncTask {
                         }
                     }
                 }
-                Log.d("doInBackground", "LOTTO Number Update End");
+                Log.i("doInBackground", "LOTTO Number Update End");
             }
         } catch (JSONException je) {
             Log.i("onClick JSon", "JSON Error....");
