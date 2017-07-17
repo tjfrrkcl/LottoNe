@@ -12,6 +12,8 @@ public interface LottoListener {
 
     public int getLottoCount();
 
+    public int getLottoMaxdrwNo() ;
+
     public int getLottoNumber3Exists(String checkNumber);
 
     public int getLottoNumber4Exists(String checkNumber);

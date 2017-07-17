@@ -24,11 +24,12 @@ import static javax.net.ssl.SSLEngineResult.Status.OK;
 
 //public class WebLottoNumberGetter  extends AsyncTask {
 public class WebLottoNumberGetter extends AsyncTask {
-    DBHandler handler = null; //new DBHandler(MainActivity.);
+    DBHandler handler = null; //new DBHandler(this.context);
     private Context context;
 
     public WebLottoNumberGetter(Context context) {
         this.context = context;
+        handler = new DBHandler(this.context);
     }
     @Override
     public String doInBackground(Object[] aaa) {
@@ -109,21 +110,28 @@ public class WebLottoNumberGetter extends AsyncTask {
             response = new String(byteData);
 
             JSONObject responseJSON = new JSONObject(response);
+            int maxdrwNo = 0;
             if( "success".equals( responseJSON.getString("returnValue") ) ) {
 //            Boolean result = (Boolean) responseJSON.get("result");
 //            String age = (String) responseJSON.get("age");
 //            String job = (String) responseJSON.get("job");
-                Lotto lotto = new Lotto();
-                lotto.setRecu_no(responseJSON.getInt("drwNo"));
-                lotto.setCom_yn("Y");
-                lotto.setF1(responseJSON.getInt("drwtNo1"));
-                lotto.setS2(responseJSON.getInt("drwtNo2"));
-                lotto.setT3(responseJSON.getInt("drwtNo3"));
-                lotto.setF4(responseJSON.getInt("drwtNo4"));
-                lotto.setF5(responseJSON.getInt("drwtNo5"));
-                lotto.setS6(responseJSON.getInt("drwtNo6"));
-                handler = new DBHandler(this.context);
-                handler.addLotto(lotto);// Inserting into DB
+
+                maxdrwNo = handler.getLottoMaxdrwNo();
+                if(responseJSON.getInt("drwNo") > maxdrwNo) {
+                    Log.d("getLottoNumber", "drwNo(" + responseJSON.getInt("drwNo") + ") > maxdrwNo(" + maxdrwNo + ")");
+                    Lotto lotto = new Lotto();
+                    lotto.setRecu_no(responseJSON.getInt("drwNo"));
+                    lotto.setCom_yn("Y");
+                    lotto.setF1(responseJSON.getInt("drwtNo1"));
+                    lotto.setS2(responseJSON.getInt("drwtNo2"));
+                    lotto.setT3(responseJSON.getInt("drwtNo3"));
+                    lotto.setF4(responseJSON.getInt("drwtNo4"));
+                    lotto.setF5(responseJSON.getInt("drwtNo5"));
+                    lotto.setS6(responseJSON.getInt("drwtNo6"));
+                    handler.addLotto(lotto);// Inserting into DB
+                } else {
+                    Log.d("getLottoNumber", "drwNo(" + responseJSON.getInt("drwNo") + ") <= maxdrwNo(" + maxdrwNo + ")");
+                }
             }
 
             Log.i("getLottoNumber", "DATA response = " + response);

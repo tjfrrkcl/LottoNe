@@ -96,6 +96,22 @@ public class DBHandler extends SQLiteOpenHelper implements LottoListener {
         int num = 0;
         SQLiteDatabase db = this.getReadableDatabase();
         try{
+            String QUERY = "SELECT max(KEY_RECU_NO) as KEY_RECU_NO FROM "  + TABLE_NAME;
+            Cursor cursor = db.rawQuery(QUERY, null);
+            num = cursor.getCount();
+            db.close();
+            return num;
+        }catch (Exception e){
+            Log.e("error",e+"");
+        }
+        return 0;
+    }
+
+    @Override
+    public int getLottoMaxdrwNo() {
+        int num = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        try{
             String QUERY = "SELECT * FROM "  + TABLE_NAME;
             Cursor cursor = db.rawQuery(QUERY, null);
             num = cursor.getCount();
