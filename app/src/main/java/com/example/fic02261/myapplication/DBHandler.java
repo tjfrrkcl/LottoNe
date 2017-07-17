@@ -3,6 +3,7 @@ package com.example.fic02261.myapplication;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -41,9 +42,8 @@ public class DBHandler extends SQLiteOpenHelper implements LottoListener {
     }
 
     @Override
-    public void addLotto(Lotto lotto) {
+    public void addLotto(Lotto lotto) throws SQLiteConstraintException, Exception {
         SQLiteDatabase db = this.getWritableDatabase();
-        try{
             ContentValues values = new ContentValues();
             values.put(KEY_RECU_NO, lotto.getRecu_no());
             values.put(KEY_COM_YN, lotto.getCom_yn());
@@ -55,9 +55,6 @@ public class DBHandler extends SQLiteOpenHelper implements LottoListener {
             values.put(KEY_S6,lotto.getS6());
             db.insert(TABLE_NAME, null, values);
             db.close();
-        }catch (Exception e){
-            Log.e("problem", e + "");
-        }
     }
 
     @Override
@@ -96,7 +93,7 @@ public class DBHandler extends SQLiteOpenHelper implements LottoListener {
         int num = 0;
         SQLiteDatabase db = this.getReadableDatabase();
         try{
-            String QUERY = "SELECT max(KEY_RECU_NO) as KEY_RECU_NO FROM "  + TABLE_NAME;
+            String QUERY = "SELECT * FROM "  + TABLE_NAME;
             Cursor cursor = db.rawQuery(QUERY, null);
             num = cursor.getCount();
             db.close();
@@ -112,9 +109,10 @@ public class DBHandler extends SQLiteOpenHelper implements LottoListener {
         int num = 0;
         SQLiteDatabase db = this.getReadableDatabase();
         try{
-            String QUERY = "SELECT * FROM "  + TABLE_NAME;
+            String QUERY = "SELECT max(recu_no) as KEY_RECU_NO FROM "  + TABLE_NAME;
             Cursor cursor = db.rawQuery(QUERY, null);
-            num = cursor.getCount();
+            if(!cursor.isLast()) cursor.moveToNext();
+            num = cursor.getInt(0);
             db.close();
             return num;
         }catch (Exception e){

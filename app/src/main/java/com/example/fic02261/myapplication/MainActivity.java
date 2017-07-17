@@ -1,5 +1,6 @@
 package com.example.fic02261.myapplication;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.RadialGradient;
 import android.graphics.Shader;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
     LottoAdapter adapter;
     ArrayList<Lotto> lottoArrayList;
     DBHandler handler;
+    Context mContext = this;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -74,6 +76,8 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
         if(handler.getLottoCount() == 0 )
         {
             new DataFetcherTask().execute();
+        } else {
+
         }
 //        else
 //        {
@@ -309,7 +313,15 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
                     lotto.setF4(f4);
                     lotto.setF5(f5);
                     lotto.setS6(s6);
-                    handler.addLotto(lotto);// Inserting into DB
+                    try {
+                        handler.addLotto(lotto);// Inserting into DB
+                    } catch(android.database.sqlite.SQLiteConstraintException se) {
+                        Log.e("doInBackground", se.getMessage());
+                        break;
+                    } catch(Exception e) {
+                        Log.e("doInBackground", e.getMessage());
+                        break;
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

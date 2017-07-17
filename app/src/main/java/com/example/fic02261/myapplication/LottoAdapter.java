@@ -14,7 +14,7 @@ public class LottoAdapter extends BaseAdapter {
     Context context;
     ArrayList<Lotto> listData;
 
-    public LottoAdapter(Context context, ArrayList<Lotto> listData){
+    public LottoAdapter(Context context, ArrayList<Lotto> listData) {
         this.context = context;
         this.listData = listData;
     }
