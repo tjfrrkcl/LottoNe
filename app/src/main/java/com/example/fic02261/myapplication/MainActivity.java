@@ -2,10 +2,13 @@ package com.example.fic02261.myapplication;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.RadialGradient;
+import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.graphics.drawable.shapes.RoundRectShape;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -109,6 +112,14 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
         ShapeDrawable sGreen = new ShapeDrawable(new OvalShape());
         sGreen.getPaint().setShader(new RadialGradient(60, 30, 50, Color.WHITE, Color.rgb(50,205,50), Shader.TileMode.CLAMP));
 
+        float[] outerR = new float[] { 12, 12, 12, 12, 12, 12, 12, 12 };
+        RectF inset = new RectF(3, 3, 3, 3);
+        float[] innerR = new float[] { 12, 12, 0, 0, 12, 12, 0, 0 };
+        ShapeDrawable recSaveButton = new ShapeDrawable(new RoundRectShape(outerR,inset, innerR));
+        recSaveButton.setIntrinsicWidth(200);
+        recSaveButton.setIntrinsicHeight(100);
+        recSaveButton.getPaint().setShader(new LinearGradient(0, 0, 50, 50, new int[] {0xFFFF0000, 0XFF00FF00, 0XFF0000FF }, null,Shader.TileMode.REPEAT));
+
         //버튼 객체 배열 사이즈 만큼 루프를 돌면서
         //랜덤값을 뽑아내고 각각의 버튼에 숫자를 넣어준다.
         //끝내기 버튼을 눌렀을시에 종료~
@@ -139,14 +150,16 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
                 for (int j = 0; j < 6; j++) {
                     //number을 문자열로 캐스팅~
                     DisplayMetrics dm = getResources().getDisplayMetrics();
-                    LinearLayout.LayoutParams btn_param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    //LinearLayout.LayoutParams btn_param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    LinearLayout.LayoutParams btn_param = new LinearLayout.LayoutParams(120, 120);
                     btn_param.rightMargin = Math.round(5 * dm.density);
                     btn[i][j] = new Button(this, null, android.R.attr.buttonStyleSmall);
                     btn[i][j].setClickable(false);
-                    btn[i][j].setHeight(20);
-                    btn[i][j].setWidth(20);
+                    btn[i][j].setHeight(10);
+                    btn[i][j].setWidth(10);
                     btn[i][j].setRight(10);
                     btn[i][j].setId(DYNAMIC_VIEW_ID + (numButton++));
+                    btn[i][j].setTextSize(18);
                     int number =lottoList.get(j);
                     btn[i][j].setText(String.valueOf(number));
                     if( number < 11 ) {
@@ -168,10 +181,25 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
                     btn[i][j].setLayoutParams(btn_param);
 
                     LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    param.setMargins(20, 20, 10, 10);
+                    param.setMargins(10, 10, 10, 10);
                     dynamicLayouts[i].addView(btn[i][j]);
                     dynamicLayouts[i].setLayoutParams(param);
                 }
+                Button saveButton = new Button(this, null, android.R.attr.buttonStyleSmall);
+                saveButton.setClickable(false);
+                saveButton.setHeight(10);
+                saveButton.setWidth(10);
+                saveButton.setRight(10);
+                saveButton.setId(DYNAMIC_VIEW_ID + (numButton++));
+                setBackgroundButton(saveButton, recSaveButton);
+                saveButton.setText("저장");
+
+                LinearLayout.LayoutParams btn_param = new LinearLayout.LayoutParams(120, 120);
+                btn_param.rightMargin = Math.round(5 * getResources().getDisplayMetrics().density);
+                btn_param.setMargins(20, 10, 10, 10);
+                saveButton.setLayoutParams(btn_param);
+
+                dynamicLayouts[i].addView(saveButton);
                 dynamicLayout.addView(dynamicLayouts[i]);
 //                LinearLayout.LayoutParams sparam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 //                sparam.gravity = Gravity.CENTER_VERTICAL;
@@ -300,21 +328,21 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
                     JSONArray lottoArray = jsonArray.getJSONArray(i);
                     int recu_no = lottoArray.getInt(0);
                     String com_yn = lottoArray.getString(1);
-                    int f1 = lottoArray.getInt(2);
-                    int s2 = lottoArray.getInt(3);
-                    int t3 = lottoArray.getInt(4);
-                    int f4 = lottoArray.getInt(5);
-                    int f5 = lottoArray.getInt(6);
-                    int s6 = lottoArray.getInt(7);
+                    int k1 = lottoArray.getInt(2);
+                    int k2 = lottoArray.getInt(3);
+                    int k3 = lottoArray.getInt(4);
+                    int k4 = lottoArray.getInt(5);
+                    int k5 = lottoArray.getInt(6);
+                    int k6 = lottoArray.getInt(7);
                     Lotto lotto = new Lotto();
                     lotto.setRecu_no(recu_no);
                     lotto.setCom_yn(com_yn);
-                    lotto.setF1(f1);
-                    lotto.setS2(s2);
-                    lotto.setT3(t3);
-                    lotto.setF4(f4);
-                    lotto.setF5(f5);
-                    lotto.setS6(s6);
+                    lotto.setK1(k1);
+                    lotto.setK2(k2);
+                    lotto.setK3(k3);
+                    lotto.setK4(k4);
+                    lotto.setK5(k5);
+                    lotto.setK6(k6);
                     handler.addLotto(lotto);// Inserting into DB
                 }
             } catch (JSONException e) {

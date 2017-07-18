@@ -6,12 +6,12 @@ package com.example.fic02261.myapplication;
 class Lotto {
     private int recu_no;
     private String com_yn;
-    private int f1;
-    private int s2;
-    private int t3;
-    private int f4;
-    private int f5;
-    private int s6;
+    private int k1;
+    private int k2;
+    private int k3;
+    private int k4;
+    private int k5;
+    private int k6;
 
     public Lotto() {
     }
@@ -20,64 +20,58 @@ class Lotto {
         this.recu_no = recu_no;
     }
 
-    public Lotto(int recu_no, String com_yn, int f1, int s2, int t3, int f4, int f5, int s6) {
+    public Lotto(int recu_no, String com_yn, int k1, int k2, int k3, int k4, int k5, int k6) {
         this.recu_no = recu_no;
         this.com_yn = com_yn;
-        this.f1 = f1;
-        this.s2 = s2;
-        this.t3 = t3;
-        this.f4 = f4;
-        this.f5 = f5;
-        this.s6 = s6;
+        this.k1 = k1;
+        this.k2 = k2;
+        this.k3 = k3;
+        this.k4 = k4;
+        this.k5 = k5;
+        this.k6 = k6;
     }
 
-    public int getF1() {
-        return f1;
+    public int getK1() {
+        return k1;
     }
 
-    public void setF1(int f1) {
-        this.f1 = f1;
+    public void setK1(int k1) {
+        this.k1 = k1;
     }
 
-    public int getS2() {
-        return s2;
+    public int getK2() {
+        return k2;
     }
 
-    public void setS2(int s2) {
-        this.s2 = s2;
+    public void setK2(int k2) {
+        this.k2 = k2;
     }
 
-    public int getT3() {
-        return t3;
+    public int getK3() {
+        return k3;
     }
 
-    public void setT3(int t3) {
-        this.t3 = t3;
+    public void setK3(int k3) {
+        this.k3 = k3;
     }
 
-    public int getF4() {
-        return f4;
+    public int getK4() {
+        return k4;
     }
 
-    public void setF4(int f4) {
-        this.f4 = f4;
+    public void setK4(int k4) { this.k4 = k4; }
+
+    public int getK5() {
+        return k5;
     }
 
-    public int getF5() {
-        return f5;
+    public void setK5(int k5) { this.k5 = k5; }
+
+    public int getK6() {
+        return k6;
     }
 
-    public void setF5(int f5) {
-        this.f5 = f5;
-    }
-
-    public int getS6() {
-        return s6;
-    }
-
-    public void setS6(int s6) {
-        this.s6 = s6;
-    }
+    public void setK6(int k6) { this.k6 = k6; }
 
     public int getRecu_no() {
         return recu_no;

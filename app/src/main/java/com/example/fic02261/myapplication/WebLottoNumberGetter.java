@@ -61,12 +61,12 @@ public class WebLottoNumberGetter extends AsyncTask {
                                     Lotto lotto = new Lotto();
                                     lotto.setRecu_no(responseJSON.getInt("drwNo"));
                                     lotto.setCom_yn("Y");
-                                    lotto.setF1(responseJSON.getInt("drwtNo1"));
-                                    lotto.setS2(responseJSON.getInt("drwtNo2"));
-                                    lotto.setT3(responseJSON.getInt("drwtNo3"));
-                                    lotto.setF4(responseJSON.getInt("drwtNo4"));
-                                    lotto.setF5(responseJSON.getInt("drwtNo5"));
-                                    lotto.setS6(responseJSON.getInt("drwtNo6"));
+                                    lotto.setK1(responseJSON.getInt("drwtNo1"));
+                                    lotto.setK2(responseJSON.getInt("drwtNo2"));
+                                    lotto.setK3(responseJSON.getInt("drwtNo3"));
+                                    lotto.setK4(responseJSON.getInt("drwtNo4"));
+                                    lotto.setK5(responseJSON.getInt("drwtNo5"));
+                                    lotto.setK6(responseJSON.getInt("drwtNo6"));
                                     handler.addLotto(lotto);// Inserting into DB
                                 } else {
                                     Log.d("getLottoNumber", "drwNo(" + responseJSON.getInt("drwNo") + ") <= maxdrwNo(" + maxdrwNo + ")");
