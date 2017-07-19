@@ -202,7 +202,13 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
                 saveButton.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         Log.d("log", "position :" + position);
-                        Toast.makeText(getApplicationContext(), "클릭한 position:" + position, Toast.LENGTH_LONG).show();
+                        Button thisButton = (Button) v;
+                        if("완료".equals(thisButton.getText())) {
+                            Toast.makeText(getApplicationContext(), "이미 저장 하였습니다.", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        else Toast.makeText(getApplicationContext(), "클릭한 position:" + position, Toast.LENGTH_LONG).show();
+                        thisButton.setText("완료");
                     }
                 });
                 dynamicLayouts[i].addView(saveButton);
