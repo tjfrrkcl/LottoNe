@@ -19,6 +19,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -113,12 +114,13 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
         sGreen.getPaint().setShader(new RadialGradient(60, 30, 50, Color.WHITE, Color.rgb(50,205,50), Shader.TileMode.CLAMP));
 
         float[] outerR = new float[] { 12, 12, 12, 12, 12, 12, 12, 12 };
-        RectF inset = new RectF(3, 3, 3, 3);
+        RectF inset = new RectF(0, 0, 0, 0);
         float[] innerR = new float[] { 12, 12, 0, 0, 12, 12, 0, 0 };
-        ShapeDrawable recSaveButton = new ShapeDrawable(new RoundRectShape(outerR,inset, innerR));
-        recSaveButton.setIntrinsicWidth(200);
-        recSaveButton.setIntrinsicHeight(100);
-        recSaveButton.getPaint().setShader(new LinearGradient(0, 0, 50, 50, new int[] {0xFFFF0000, 0XFF00FF00, 0XFF0000FF }, null,Shader.TileMode.REPEAT));
+        ShapeDrawable recSaveButton = new ShapeDrawable(new RoundRectShape(outerR, inset, innerR));
+//        recSaveButton.setIntrinsicWidth(200);
+//        recSaveButton.setIntrinsicHeight(100);
+//        recSaveButton.getPaint().setShader(new LinearGradient(0, 0, 50, 50, new int[] {0xFFFF0000, 0XFF00FF00, 0XFF0000FF }, null,Shader.TileMode.REPEAT));
+        recSaveButton.getPaint().setShader(new RadialGradient(60, 30, 50, Color.WHITE, Color.LTGRAY, Shader.TileMode.CLAMP));
 
         //버튼 객체 배열 사이즈 만큼 루프를 돌면서
         //랜덤값을 뽑아내고 각각의 버튼에 숫자를 넣어준다.
@@ -162,6 +164,7 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
                     btn[i][j].setTextSize(18);
                     int number =lottoList.get(j);
                     btn[i][j].setText(String.valueOf(number));
+                    btn[i][j].setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
                     if( number < 11 ) {
                         btn[i][j] = setBackgroundButton(btn[i][j], sYellow);
                         btn[i][j].setTextColor(Color.BLUE);
@@ -180,13 +183,10 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
                     }
                     btn[i][j].setLayoutParams(btn_param);
 
-                    LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    param.setMargins(10, 10, 10, 10);
                     dynamicLayouts[i].addView(btn[i][j]);
-                    dynamicLayouts[i].setLayoutParams(param);
                 }
                 Button saveButton = new Button(this, null, android.R.attr.buttonStyleSmall);
-                saveButton.setClickable(false);
+                saveButton.setClickable(true);
                 saveButton.setHeight(10);
                 saveButton.setWidth(10);
                 saveButton.setRight(10);
@@ -196,10 +196,20 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
 
                 LinearLayout.LayoutParams btn_param = new LinearLayout.LayoutParams(120, 120);
                 btn_param.rightMargin = Math.round(5 * getResources().getDisplayMetrics().density);
-                btn_param.setMargins(20, 10, 10, 10);
+//                btn_param.setMargins(20, 0, 0, 10);
                 saveButton.setLayoutParams(btn_param);
-
+                final int position = i;
+                saveButton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Log.d("log", "position :" + position);
+                        Toast.makeText(getApplicationContext(), "클릭한 position:" + position, Toast.LENGTH_LONG).show();
+                    }
+                });
                 dynamicLayouts[i].addView(saveButton);
+                dynamicLayouts[i].setBackgroundColor(Color.WHITE);
+                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                param.setMargins(10, 10, 10, 10);
+                dynamicLayouts[i].setLayoutParams(param);
                 dynamicLayout.addView(dynamicLayouts[i]);
 //                LinearLayout.LayoutParams sparam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 //                sparam.gravity = Gravity.CENTER_VERTICAL;
