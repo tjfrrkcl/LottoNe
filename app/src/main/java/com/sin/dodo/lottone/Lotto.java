@@ -1,4 +1,4 @@
-package com.example.fic02261.myapplication;
+package com.sin.dodo.lottone;
 
 /**
  * Created by FIC02261 on 2016-09-21.

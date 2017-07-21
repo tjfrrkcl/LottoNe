@@ -1,8 +1,8 @@
-package com.example.fic02261.myapplication;
+package com.sin.dodo.lottone;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.RadialGradient;
 import android.graphics.RectF;
 import android.graphics.Shader;
@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -38,7 +39,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class MainActivity extends AppCompatActivity  implements  View.OnClickListener {
+import static android.view.View.*;
+
+public class MainActivity extends AppCompatActivity  implements  OnClickListener {
 
     //버튼객체 참조 변수 선언
     Button[][] btn;
@@ -53,6 +56,7 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
     ArrayList<Lotto> lottoArrayList;
     DBHandler handler;
     Context mContext = this;
+    int currentDrwNo = 0;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -103,15 +107,15 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
 //        ShapeDrawable sd = new ShapeDrawable(new OvalShape());
 //        sd.getPaint().setShader(new RadialGradient(60, 30, 50, Color.LTGRAY, Color.LTGRAY, Shader.TileMode.CLAMP));
         ShapeDrawable sYellow = new ShapeDrawable(new OvalShape());
-        sYellow.getPaint().setShader(new RadialGradient(60, 30, 50, Color.WHITE, Color.rgb(255,215,0), Shader.TileMode.CLAMP));
+        sYellow.getPaint().setShader(new RadialGradient(30, 30, 30, Color.WHITE, Color.rgb(255,215,0), Shader.TileMode.CLAMP));
         ShapeDrawable sBlue = new ShapeDrawable(new OvalShape());
-        sBlue.getPaint().setShader(new RadialGradient(60, 30, 50, Color.WHITE, Color.BLUE, Shader.TileMode.CLAMP));
+        sBlue.getPaint().setShader(new RadialGradient(30, 30, 30, Color.WHITE, Color.BLUE, Shader.TileMode.CLAMP));
         ShapeDrawable sRed = new ShapeDrawable(new OvalShape());
-        sRed.getPaint().setShader(new RadialGradient(60, 30, 50, Color.WHITE, Color.RED, Shader.TileMode.CLAMP));
+        sRed.getPaint().setShader(new RadialGradient(30, 30, 30, Color.WHITE, Color.RED, Shader.TileMode.CLAMP));
         ShapeDrawable sBlack = new ShapeDrawable(new OvalShape());
-        sBlack.getPaint().setShader(new RadialGradient(60, 30, 50, Color.WHITE, Color.BLACK, Shader.TileMode.CLAMP));
+        sBlack.getPaint().setShader(new RadialGradient(30, 30, 30, Color.WHITE, Color.BLACK, Shader.TileMode.CLAMP));
         ShapeDrawable sGreen = new ShapeDrawable(new OvalShape());
-        sGreen.getPaint().setShader(new RadialGradient(60, 30, 50, Color.WHITE, Color.rgb(50,205,50), Shader.TileMode.CLAMP));
+        sGreen.getPaint().setShader(new RadialGradient(30, 30, 30, Color.WHITE, Color.rgb(50,205,50), Shader.TileMode.CLAMP));
 
         float[] outerR = new float[] { 12, 12, 12, 12, 12, 12, 12, 12 };
         RectF inset = new RectF(0, 0, 0, 0);
@@ -120,7 +124,7 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
 //        recSaveButton.setIntrinsicWidth(200);
 //        recSaveButton.setIntrinsicHeight(100);
 //        recSaveButton.getPaint().setShader(new LinearGradient(0, 0, 50, 50, new int[] {0xFFFF0000, 0XFF00FF00, 0XFF0000FF }, null,Shader.TileMode.REPEAT));
-        recSaveButton.getPaint().setShader(new RadialGradient(60, 30, 50, Color.WHITE, Color.LTGRAY, Shader.TileMode.CLAMP));
+        recSaveButton.getPaint().setShader(new RadialGradient(60, 30, 30, Color.WHITE, Color.LTGRAY, Shader.TileMode.CLAMP));
 
         //버튼 객체 배열 사이즈 만큼 루프를 돌면서
         //랜덤값을 뽑아내고 각각의 버튼에 숫자를 넣어준다.
@@ -153,15 +157,17 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
                     //number을 문자열로 캐스팅~
                     DisplayMetrics dm = getResources().getDisplayMetrics();
                     //LinearLayout.LayoutParams btn_param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    LinearLayout.LayoutParams btn_param = new LinearLayout.LayoutParams(120, 120);
+                    LinearLayout.LayoutParams btn_param = new LinearLayout.LayoutParams(110, 110);
                     btn_param.rightMargin = Math.round(5 * dm.density);
+                    if ( j == 0 ) btn_param.setMargins(Math.round( 10 * dm.density), 20, Math.round( 5 * dm.density), 20);
+                    else btn_param.setMargins(0, 20, Math.round( 5 * dm.density), 20);
                     btn[i][j] = new Button(this, null, android.R.attr.buttonStyleSmall);
                     btn[i][j].setClickable(false);
                     btn[i][j].setHeight(10);
                     btn[i][j].setWidth(10);
                     btn[i][j].setRight(10);
                     btn[i][j].setId(DYNAMIC_VIEW_ID + (numButton++));
-                    btn[i][j].setTextSize(18);
+                    btn[i][j].setTextSize(14);
                     int number =lottoList.get(j);
                     btn[i][j].setText(String.valueOf(number));
                     btn[i][j].setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
@@ -191,24 +197,71 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
                 saveButton.setWidth(10);
                 saveButton.setRight(10);
                 saveButton.setId(DYNAMIC_VIEW_ID + (numButton++));
-                setBackgroundButton(saveButton, recSaveButton);
+//                saveButton.setRight(20); //.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
                 saveButton.setText("저장");
-
-                LinearLayout.LayoutParams btn_param = new LinearLayout.LayoutParams(120, 120);
-                btn_param.rightMargin = Math.round(5 * getResources().getDisplayMetrics().density);
-//                btn_param.setMargins(20, 0, 0, 10);
+                LinearLayout.LayoutParams btn_param = new LinearLayout.LayoutParams(110, 110);
+//                btn_param.rightMargin = Math.round(5 * getResources().getDisplayMetrics().density);
+                btn_param.setMargins(20, 20, 20, 20);
                 saveButton.setLayoutParams(btn_param);
+                setBackgroundButton(saveButton, recSaveButton);
+//                setBackgroundButton(saveButton, sYellow);
+
                 final int position = i;
-                saveButton.setOnClickListener(new View.OnClickListener() {
+                List<Object> sendList = new ArrayList<Object>();
+                sendList.add(0, position);
+                sendList.add(1, lottoList);
+                sendList.add(2, recSaveButton);
+                sendList.add(3, currentDrwNo);
+                saveButton.setTag(sendList);
+                saveButton.setOnClickListener(new OnClickListener() {
                     public void onClick(View v) {
-                        Log.d("log", "position :" + position);
+                        List<Object> sendList = (ArrayList<Object>) v.getTag();
+                        int sposition = (int)sendList.get(0);
+                        List<Integer> lottoList = (ArrayList<Integer>) sendList.get(1);
+                        Log.d("log", "position :" + sposition);
                         Button thisButton = (Button) v;
                         if("완료".equals(thisButton.getText())) {
-                            Toast.makeText(getApplicationContext(), "이미 저장 하였습니다.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "이미 저장 하였습니다.", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        else Toast.makeText(getApplicationContext(), "클릭한 position:" + position, Toast.LENGTH_LONG).show();
-                        thisButton.setText("완료");
+                        else {
+                            Toast.makeText(getApplicationContext(), "Click position:" + position, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Click position:" + lottoList, Toast.LENGTH_SHORT).show();
+                            UserLotto uLotto = new UserLotto();
+                            uLotto.setRecu_no(currentDrwNo);
+                            uLotto.setK1(lottoList.get(0));
+                            uLotto.setK2(lottoList.get(1));
+                            uLotto.setK3(lottoList.get(2));
+                            uLotto.setK4(lottoList.get(3));
+                            uLotto.setK5(lottoList.get(4));
+                            uLotto.setK6(lottoList.get(5));
+
+                            int checkCount = handler.getUserLottoCount(uLotto);
+                            if( checkCount > 0 ) {
+                                Toast.makeText(getApplicationContext(), "이미 저장된 번호 입니다.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                handler.addUserLotto(uLotto);
+                            }
+                            thisButton.setText("완료");
+                        }
+                    }
+                });
+                saveButton.setOnTouchListener(new OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        Button saveButton = (Button) v;
+                        int action = event.getAction();
+                        List<Object> sendList = (ArrayList<Object>) v.getTag();
+                        ShapeDrawable recSaveButton = (ShapeDrawable)sendList.get(2);
+                        if(action == MotionEvent.ACTION_DOWN) {
+                            // 버튼이 눌렸을때 효과
+                            saveButton.setBackgroundColor(Color.GRAY);
+                        } else if (action == MotionEvent.ACTION_UP) {
+                            // 버튼에서 손을 떼었을 때 효과
+//                            saveButton.setBackgroundColor(Color.LTGRAY);
+                            saveButton.setBackgroundDrawable(recSaveButton);
+                        }
+                        return false;
                     }
                 });
                 dynamicLayouts[i].addView(saveButton);
@@ -263,7 +316,7 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
                 // Otherwise, set the URL to null.
                 Uri.parse("http://host/path"),
                 // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.example.fic02261.myapplication/http/host/path")
+                Uri.parse("android-app://com.sin.dodo.lottone/http/host/path")
         );
         new WebLottoNumberGetter(this).execute("aaaa");
         Log.i("onStart", "START");
@@ -284,7 +337,7 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
                 // Otherwise, set the URL to null.
                 Uri.parse("http://host/path"),
                 // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.example.fic02261.myapplication/http/host/path")
+                Uri.parse("android-app://com.sin.dodo.lottone/http/host/path")
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
@@ -295,9 +348,23 @@ public class MainActivity extends AppCompatActivity  implements  View.OnClickLis
         Log.i("onClick", "Start....");
         String ssss = null;
         if( v == btn3) {
-            new WebLottoNumberGetter(this).execute("aaaa");
+            Intent intent = new Intent(getApplicationContext(), UserSaveLottoNumListScrollingActivity.class);
+            startActivity(intent);
             Log.i("WebLottoNumberGetter", "End");
         } else {
+            GetLottoHttp getLottoHttp = new GetLottoHttp(mContext);
+            if( getLottoHttp.getConnectivityService() ) {
+                try {
+                    String response = getLottoHttp.getLottoNumber(0);
+                    Log.d("onClick", "jsondata = " + response);
+                    JSONObject jSonObject = new JSONObject(response);
+                    currentDrwNo = jSonObject.getInt("drwNo");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             onClickRotto(v);
         }
     }

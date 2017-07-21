@@ -1,6 +1,4 @@
-package com.example.fic02261.myapplication;
-
-import android.database.sqlite.SQLiteConstraintException;
+package com.sin.dodo.lottone;
 
 import java.util.ArrayList;
 

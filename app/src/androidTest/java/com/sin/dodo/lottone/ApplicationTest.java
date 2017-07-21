@@ -1,4 +1,4 @@
-package com.example.fic02261.myapplication;
+package com.sin.dodo.lottone;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

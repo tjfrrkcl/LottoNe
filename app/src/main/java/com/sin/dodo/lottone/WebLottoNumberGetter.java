@@ -1,4 +1,4 @@
-package com.example.fic02261.myapplication;
+package com.sin.dodo.lottone;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -17,8 +17,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-
-import static javax.net.ssl.SSLEngineResult.Status.OK;
 
 /**
  * Created by hasung007 on 2017-07-10.
@@ -40,6 +38,7 @@ public class WebLottoNumberGetter extends AsyncTask {
         int maxdrwNo = 0;
         int checkDrwNo = 0;
         int checkMaxDrwNo = 0;
+        int beforeDrwNo = 0;
         try {
             if(getConnectivityService()) {
                 maxdrwNo = handler.getLottoMaxdrwNo();
@@ -55,8 +54,10 @@ public class WebLottoNumberGetter extends AsyncTask {
                             response = getLottoNumber(checkDrwNo);
                             responseJSON = new JSONObject(response);
                             if ("success".equals(responseJSON.getString("returnValue"))) {
+                                int curDrwNo = responseJSON.getInt("drwNo");
 //                    maxdrwNo = handler.getLottoMaxdrwNo();
-                                if (responseJSON.getInt("drwNo") <= checkMaxDrwNo) {
+                                if (curDrwNo <= checkMaxDrwNo && beforeDrwNo != checkMaxDrwNo) {
+                                    beforeDrwNo = checkMaxDrwNo;
                                     Log.d("doInBackground", "drwNo(" + responseJSON.getInt("drwNo") + ") Success !!!");
                                     Lotto lotto = new Lotto();
                                     lotto.setRecu_no(responseJSON.getInt("drwNo"));

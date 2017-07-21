@@ -1,9 +1,8 @@
-package com.example.fic02261.myapplication;
+package com.sin.dodo.lottone;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -70,6 +69,45 @@ public class DBHandler extends SQLiteOpenHelper implements LottoListener {
             values.put(KEY_6,lotto.getK6());
             db.insert(TABLE_NAME, null, values);
             db.close();
+    }
+
+    public void addUserLotto(UserLotto ulotto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_RECU_NO, ulotto.getRecu_no());
+        values.put(KEY_1,ulotto.getK1());
+        values.put(KEY_2,ulotto.getK2());
+        values.put(KEY_3,ulotto.getK3());
+        values.put(KEY_4,ulotto.getK4());
+        values.put(KEY_5,ulotto.getK5());
+        values.put(KEY_6,ulotto.getK6());
+        db.insert(USER_TABLE_NAME, null, values);
+        db.close();
+    }
+
+    public int getUserLottoCount(UserLotto ulotto) {
+        int num = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        try{
+            String QUERY = "SELECT * FROM "  + USER_TABLE_NAME;
+            if(ulotto != null) {
+                QUERY += " WHERE " + KEY_RECU_NO + " = " + ulotto.getRecu_no()
+                      + " AND " + KEY_1 + " = " + ulotto.getK1()
+                      + " AND " + KEY_2 + " = " + ulotto.getK2()
+                      + " AND " + KEY_3 + " = " + ulotto.getK3()
+                      + " AND " + KEY_4 + " = " + ulotto.getK4()
+                      + " AND " + KEY_5 + " = " + ulotto.getK5()
+                      + " AND " + KEY_6 + " = " + ulotto.getK6()
+                ;
+            }
+            Cursor cursor = db.rawQuery(QUERY, null);
+            num = cursor.getCount();
+            db.close();
+            return num;
+        }catch (Exception e){
+            Log.e("error",e+"");
+        }
+        return 0;
     }
 
     @Override
